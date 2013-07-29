@@ -137,7 +137,7 @@
 	echo "<br/><br/>";
 
 	$content = '<div class="dv_selectfrom_subtypes">';
-	$valid_types = get_valid_types();
+	$valid_types = get_valid_types(array('thewire'));
 	//$valid_types = elgg_get_config('registered_entities');
 	$active_from_subtypes = array_filter(explode(',', $vars["entity"]->selectfrom_subtypes));
 /*	$counter = 0;

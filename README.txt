@@ -19,9 +19,15 @@ links to create a related item (with same tags as present item).
 sidebar widget view.
 page to show full list of related items.
 a way of filtering the list by chooseable sitewide categories.
-fix performance issues - switch processing load from php to dbase.
+improve performance issues - move more processing to SQL from PHP
 
-
+0.6.6
+changed: improved performance of sql / php
+added: icon for title text (you need to use a custom css value to populate this image)
+---
+0.6.5
+fixed: added excerpt limit for related item titles
+---
 0.6.4
 fixed: show dates option was not functional in admin panel
 changed: language file strings in admin

@@ -7,6 +7,7 @@
 .elgg-related-items-list{
 	display:inline-block;
 	width:100%;
+	padding-top:7px;
 }
 
 .elgg-related-item:hover > div > a{
@@ -58,4 +59,19 @@
 .elgg-related-tags{
 	position:absolute;
 	bottom:0px;
+}
+
+.elgg-related-items-title-icon{
+	width:32px;
+	height:32px;
+	display: inline-block;
+	vertical-align: bottom;
+	margin-left: 10px;
+}
+
+.elgg-related-items-title{
+	font-size: 1.4em;
+	font-weight:bold;
+	display: inline-block;
+	padding-btotom
 }

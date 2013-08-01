@@ -21,6 +21,9 @@ page to show full list of related items.
 a way of filtering the list by chooseable sitewide categories.
 improve performance issues - move more processing to SQL from PHP
 
+0.6.8
+added: further simplified code for efficiency
+---
 0.6.7
 fixed: returned the elggobject check that filters out non objects
 --- 

@@ -9,14 +9,6 @@ function in_arrayi($needle, $haystack)
     return in_array(strtolower($needle),$haystack);
 }
 
-function trim_array(array $array,$int){
-    $newArray = array();
-    for($i=0; $i<$int; $i++){
-	array_push($newArray,$array[$i]);
-    }
-    return (array)$newArray;
-}
-
 function subval_sort($a,$subkey,$sort) {
 	foreach($a as $k=>$v) {
 		$b[$k] = strtolower($v[$subkey]);
@@ -87,34 +79,32 @@ function get_related_entities($thisitem)
 	
 	if ($limit_by_date == 'yes')
 		$options['created_time_lower'] = $created_time_lower;
-	if ($selectfrom_owner != 'all')
+	if ($selectfrom_owner <> 'all')
 		$options['owner_guids'] = $thisitem->getOwner();		
     $items = elgg_get_entities_from_metadata($options); //get list of  entities
   //  elgg_dump('count of related items a : ' . count($items));
     if(count($items,0) > 0)
     {
-	    $related_items = array();
 	    foreach($items as $item) // loop all returned items
 	    {
+			$matched_tags = array();
 	    	$itemtags = $item->tags;
 	    	if (count($itemtags) > 1)
 			{
-				$itemtags =  array_unique($item->tags); // ensure unique tags
+				$itemtags =  array_unique($itemtags); // ensure unique tags
 			}
 			else {
 				$itemtags = array($itemtags);
 			}
-			$matched_tags = array();
-		    $hitcount = 1;
+
 			if ($match_tags == 'yes')
 			{
 			    foreach($itemtags as $itemtag)
 			    {
-			    	if ($hitcount <= $match_tags_int)
+			    	if (count($matched_tags) <= $match_tags_int)
 					{
-			    		if ((in_arrayi($itemtag, $this_items_tags)) || ($itemtag == $this_items_tags))
+			    		if ((in_arrayi($itemtag, $this_items_tags)))
 			    		{
-							$hitcount++;
 							$matched_tags[] = $itemtag;
 			      		}
 					}
@@ -126,18 +116,17 @@ function get_related_entities($thisitem)
 			{
 				 foreach($itemtags as $itemtag)
 				 {
-			   		if ((in_arrayi($itemtag, $this_items_tags)) || ($itemtag == $this_items_tags))
+			   		if ((in_arrayi($itemtag, $this_items_tags)))
 			   		{
-						$hitcount++;
 						$matched_tags[] = $itemtag;
 			   		}
 				 }
 			}
-			$related_items[] = array('similarity' => $hitcount, 'item' => $item, 'matched_tags' => $matched_tags);	    
+			$related_items[] = array('similarity' => count($matched_tags), 'item' => $item, 'matched_tags' => $matched_tags);	    
+			//elgg_dump('count of related items b : ' . count($related_items) . '; matched_tags: ' . count($matched_tags));
 	    } // end loop of examining items
 	
 	      $related_items = subval_sort($related_items,'similarity',arsort);
-	      $related_items = trim_array($related_items, $max_related_items);
 		  
 		  switch($column_count) // this can be moved to a plugin variable
 		  {
@@ -165,9 +154,10 @@ function get_related_entities($thisitem)
 		  echo '<div class="elgg-related-items">';
 	      echo "<div class='elgg-related-items-title'>" . elgg_echo('related-items:title') . "</div><div class='elgg-related-items-title-icon'></div>";
 	      echo '<ul class="elgg-related-items-list">';
-	      foreach ($related_items as $related_item)
+		  $i = 1;
+		  while ($i <= $max_related_items)
 	      {
-			$thisitem = $related_item['item'];
+			$thisitem = $related_items[$i]['item'];
 			if ($thisitem instanceof ElggObject) // ensure the item is not a group or other object type
 			{
 				$owner = $thisitem->getOwnerEntity();
@@ -207,10 +197,11 @@ function get_related_entities($thisitem)
 				if($show_names =='yes')
 					echo "<br/><small>" . $owner->name . "</small>";
 				if($show_tags =='yes')
-					$related_item_tags = elgg_view('output/tags',array('value'=>$related_item['matched_tags']));
+					$related_item_tags = elgg_view('output/tags',array('value'=>$related_items[$i]['matched_tags']));
 				echo "<br/><small>" . $related_item_tags . "</small>";
 				echo "</div></li>";
 			}
+			$i++;
 		  }
 	      echo '</ul></div>';
 	    }

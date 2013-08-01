@@ -98,7 +98,8 @@
                                 'current' => elgg_echo('related-items:current-owner'),
                         ),
                 ));
-	/*echo "<br/><br/>";
+	echo "<br/><br/>";
+	/*
 	echo elgg_echo('related-items:selectfrom-group');
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[selectfrom_group]',
@@ -138,15 +139,7 @@
 
 	$content = '<div class="dv_selectfrom_subtypes">';
 	$valid_types = get_valid_types(array('thewire'));
-	//$valid_types = elgg_get_config('registered_entities');
 	$active_from_subtypes = array_filter(explode(',', $vars["entity"]->selectfrom_subtypes));
-/*	$counter = 0;
-	foreach ($valid_types as $entity_type)
-	{
-		$entity_type_text = (('item:object:'.$entity_type) != elgg_echo('item:object:'.$entity_type)) ? (elgg_echo('item:object:'.$entity_type)) : ($entity_type);
-		$all_sub_types[$counter] = array('internal_subtype' => $entity_type, 'value' => $entity_type_text);
-		$counter++;
-	}*/
 	$content .= elgg_view('input/checkboxes',array(
 										'name'=>'from_subtypes',
 										'value'=>$active_from_subtypes,

@@ -34,9 +34,6 @@ function get_related_entities($thisitem)
 	$limit_by_date = elgg_get_plugin_setting('limit_by_date','related-items');
 	$related_date_period = elgg_get_plugin_setting('related_date_period','related-items');	
 	$created_time_lower = strtotime($related_date_period) ? strtotime($related_date_period) : strtotime('-1 year');
-	$show_names = elgg_get_plugin_setting('show_names','related-items');
-	$show_dates = elgg_get_plugin_setting('show_dates','related-items');
-	$show_tags = elgg_get_plugin_setting('show_tags','related-items');
 	$selectfrom_owner = elgg_get_plugin_setting('selectfrom_owner','related-items');
 	$selectfrom_thissubtype = elgg_get_plugin_setting('selectfrom_thissubtype','related-items');
 	if ($selectfrom_thissubtype == 'no')
@@ -49,9 +46,7 @@ function get_related_entities($thisitem)
 	}
 	$match_tags = elgg_get_plugin_setting('match_tags','related-items');	
 	$match_tags_int = elgg_get_plugin_setting('match_tags_int','related-items');
-	$max_related_items = elgg_get_plugin_setting('max_items','related-items');	
-	$column_count = elgg_get_plugin_setting('column_count','related-items');
-	$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
+
 	$this_items_tags = $thisitem->tags;
   	if (isset($this_items_tags)) //if the current item has tags
   	{
@@ -80,114 +75,107 @@ function get_related_entities($thisitem)
 	    {
 		    foreach($items as $item) // loop all returned items
 		    {
-				$matched_tags = array();
-		    	$itemtags = $item->tags;
-		    	if (is_array($itemtags))
-				{
-					$itemtags =  array_unique($itemtags); // ensure unique tags
+		    	if ($item instanceof ElggObject){ 
+					$matched_tags = array();
+			    	$itemtags = $item->tags;
+			    	if (is_array($itemtags))
+					{
+						$itemtags =  array_unique($itemtags); // ensure unique tags
+					}
+					else {
+						$itemtags = array($itemtags);
+					}
+					if ($match_tags == 'yes') // if the search is limited to an amount of tags per entity to match
+					{
+						$i = 0;
+						while (($i <= ($match_tags_int -1))&&($i <= (count($itemtags)-1)))
+					    {
+					    		if ((in_arrayi($itemtags[$i], $this_items_tags)))
+					    		{
+									$matched_tags[] = $itemtags[$i];
+					      		}
+								$i++;
+					    }
+					}
+					else  // if the search is unlimited by any amount of tags per entity
+					{
+						 foreach($itemtags as $itemtag)
+						 {
+					   		if ((in_arrayi($itemtag, $this_items_tags)))
+					   		{
+								$matched_tags[] = $itemtag;
+					   		}
+						 }
+					}
+					$related_items[] = array('similarity' => count($matched_tags), 'item' => $item, 'matched_tags' => $matched_tags);	    
+					//elgg_dump('count of related items b : ' . count($related_items) . '; matched_tags: ' . count($matched_tags));
 				}
-				else {
-					$itemtags = array($itemtags);
-				}
-				if ($match_tags == 'yes') // if the search is limited to an amount of tags per entity to match
-				{
-					$i = 0;
-					while (($i <= ($match_tags_int -1))&&($i <= (count($itemtags)-1)))
-				    {
-				    		if ((in_arrayi($itemtags[$i], $this_items_tags)))
-				    		{
-								$matched_tags[] = $itemtags[$i];
-				      		}
-							$i++;
-				    }
-				}
-				else  // if the search is unlimited by any amount of tags per entity
-				{
-					 foreach($itemtags as $itemtag)
-					 {
-				   		if ((in_arrayi($itemtag, $this_items_tags)))
-				   		{
-							$matched_tags[] = $itemtag;
-				   		}
-					 }
-				}
-				$related_items[] = array('similarity' => count($matched_tags), 'item' => $item, 'matched_tags' => $matched_tags);	    
-				//elgg_dump('count of related items b : ' . count($related_items) . '; matched_tags: ' . count($matched_tags));
 		    } // end loop of examining items
 	      $related_items = subval_sort($related_items,'similarity',arsort);
-		  switch($column_count) // this can be moved to a plugin variable
-		  {
-		  	case 1: {$box_width = 97;break;}
-			case 2: {$box_width = 47;break;}
-			case 3: {$box_width = 30;break;}
-			default: {$box_width = 22;break;}
+		  return $related_items;
+	      }
+		  else {
+		   return false;
 		  }
-		  if ($jquery_height == 'yes')
-	      	echo "<script type=\"text/javascript\" >
-	      	$(document).ready(function(){
-	      		var maxHeight = 0;
-	      		var set_height = function(column) {
-	      			column = $(column);
-	      			column.each(function(){
-	      				if($(this).height() > maxHeight){
-	      					maxHeight = $(this).height();
-	      				}
-	      			});
-	      			column.height(maxHeight);
-	      		}
-	      		set_height('.elgg-related-items-col');
-	      		});      		$(window).resize(set_height('.elgg-related-items-col'));
-	      	</script>";
-		  echo '<div class="elgg-related-items">';
-	      echo "<div class='elgg-related-items-title'>" . elgg_echo('related-items:title') . "</div><div class='elgg-related-items-title-icon'></div>";
-	      echo '<ul class="elgg-related-items-list">';
-		  $i = 0;
-		  while ($i <= ($max_related_items -1))
-	      {
-			$thisitem = $related_items[$i]['item'];
-			if ($thisitem instanceof ElggObject) // ensure the item is not a group or other object type
-			{
-				$owner = $thisitem->getOwnerEntity();
-				$this_subtype = $thisitem->getsubtype();
-				echo '<li class="elgg-related-item elgg-related-' . $this_subtype . '"style="width:' . $box_width . '%;" onclick="window.location.href=\''. $thisitem->getURL() . '\';">';
-				echo "<div class='elgg-related-items-col'>";
-				switch($this_subtype)
-				{
-					case 'image':
-						$item_guid = $thisitem->getGUID();
-						$title = $thisitem->getTitle();
-						$icon = "<img src='" . elgg_get_site_url() . "photos/thumbnail/" . $item_guid . "/thumb/' alt='" . $title . "'/>";	
-						break;
-					case 'videolist_item':
-					case 'izap_videos':
-					case 'file':
-						$icon = elgg_view_entity_icon($thisitem, 'small'); break;
-					default: 			break;
-				}
-				$css_tag = $this_subtype;
-				if (!empty($icon))
-					$css_tag .= '-gfx';
-				else
-				{
-					$icon ="&nbsp;" ;	
-				}
-				$div = "<div class='elgg-related-item-icon elgg-related-" . $css_tag . "-icon'>" . $icon . "</div>";
-				echo $div;
-				$icon = null;
-				echo "<a href='{$thisitem->getURL()}'>" . elgg_get_excerpt($thisitem->title, 100) . "</a>";
-				if($show_dates =='yes')				 
-					echo "<br/><small>" . elgg_view_friendly_time($thisitem->time_created) . "</small>";
-				if($show_names =='yes')
-					echo "<br/><small>" . $owner->name . "</small>";
-				if($show_tags =='yes')
-					$related_item_tags = elgg_view('output/tags',array('value'=>$related_items[$i]['matched_tags']));
-				echo "<br/><small>" . $related_item_tags . "</small>";
-				echo "</div></li>";
-				$i++;
-			}
-		  }
-	      echo '</ul></div>';
-	    }
-	}  
+	 }
 }
+
+function delete_col(&$array, $offset) {
+    return array_walk($array, function (&$v) use ($offset) {
+        array_splice($v, $offset, 1);
+    });
+}
+
+function related_items_page_handler($page) {
+	  $entity = get_entity($page[0]);
+	  if ($entity instanceof ElggObject){
+	  elgg_set_page_owner_guid($entity->guid);
+	  $subtype = $entity->getSubtype();
+	  $container = $entity->getContainerEntity();
+	  $crumbs_title = $container->name;
+	  //elgg_push_breadcrumb(elgg_echo($subtype . ':' . $subtype . 's'), $subtype . "/all");
+	  if (elgg_instanceof($container, 'group')) {
+		elgg_push_breadcrumb($crumbs_title, $subtype . "/group/$container->guid/all");
+	  } else {
+		elgg_push_breadcrumb($crumbs_title,  $subtype . "/owner/$container->username");
+	  }
+	  elgg_push_breadcrumb(elgg_get_excerpt($entity->title, 75), $entity->getURL());
+	  elgg_push_breadcrumb(elgg_echo('related-items:title'));
+	  
+	  $related_entities = get_related_entities($entity);
+
+	  if ($related_entities){
+	  	$entity_list = array();	  
+		  foreach ($related_entities as $related_entity){
+		  	$entity_list[] = $related_entity['item'];
+		  }
+	  	$title = elgg_echo('related-items:title');
+		$offset = (int) max(get_input('offset', 0), 0);
+		$length = 10;
+		$content = elgg_view_entity_list(array_slice($entity_list,$offset,$length),array(
+			'count' => count($entity_list),
+			'full_view' => false,
+			'list_type' => 'list',
+			'pagination' => true),$offset, $length);
+	  }
+	  else {
+	  	$title = elgg_echo('related-items:title');
+		$content = elgg_echo('related-items:none');
+	  }
+	  
+	  
+	  $layout = elgg_view_layout('content', array(
+		  'title' => elgg_view_title($title),
+		  'content' => $content,
+		  'filter' => false,
+	  ));
+	  
+	  echo elgg_view_page($title, $layout);
+	  return true;
+	  }
+	  else  
+  		return false;
+}
+
+	
 ?>

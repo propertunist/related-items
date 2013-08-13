@@ -21,11 +21,14 @@ page to show full list of related items.
 a way of filtering the list by chooseable sitewide categories.
 improve performance issues - move more processing to SQL from PHP
 
-
+0.7
+added: view all related items page
+---
 0.6.9
 fixed: checkbox labels in admin panel (1.8 deprecated warnings)
 changed: further refined php logic for efficiency
 fixed: php logic errors with maximum tag variable
+---
 0.6.8
 added: further simplified code for efficiency
 ---

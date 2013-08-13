@@ -21,8 +21,8 @@ $english = array(
 	'related-items:max_items' => 'Maximum number of related items to show: ',
 	'related-items:column_count' => 'How many columns to split the grid into?: ',
 	'related-items:jquery_height' => 'Use jquery to set all boxes the same height?: ',
-	
-	
+	'related-items:none' => 'No related items were found',
+	'related-items:view-all' => 'View all related items',	
 );
 					
 add_translation("en", $english);

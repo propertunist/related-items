@@ -46,7 +46,7 @@
 	background-color:#eeeeee;
 }
 
-.elgg-related-item-icon{
+.elgg-related-item-icon, .elgg-related-items-all-link{
 	float:right;
 }
 

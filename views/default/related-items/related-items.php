@@ -2,7 +2,6 @@
 	$renderto_subtypes = array_filter(explode(',', elgg_get_plugin_setting('renderto_subtypes','related-items')));
 	if(in_array($vars['entity']->getSubtype(),$renderto_subtypes))
 	{
-		$related_items = get_related_entities($vars['entity']);
 		$show_names = elgg_get_plugin_setting('show_names','related-items');
 		$show_dates = elgg_get_plugin_setting('show_dates','related-items');
 		$show_tags = elgg_get_plugin_setting('show_tags','related-items');
@@ -10,6 +9,7 @@
 		$column_count = elgg_get_plugin_setting('column_count','related-items');
 		$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
 		$elgg_path = elgg_get_site_url();
+		$related_items = get_related_entities($vars['entity'], $max_related_items, false);
 		  switch($column_count) // this can be moved to a plugin variable
 		  {
 		  	case 1: {$box_width = 97;break;}
@@ -43,27 +43,26 @@
 				'is_trusted' => true,));
 	      echo "</div>";
 	      echo '<ul class="elgg-related-items-list">';
-		  $i = 0;
-		  while ($i <= ($max_related_items -1))
+
+		  foreach ($related_items as $related_item)
 	      {
-			$thisitem = $related_items[$i]['item'];
-			if ($thisitem instanceof ElggObject) // ensure the item is not a group or other object type
+			if ($related_item instanceof ElggObject) // ensure the item is not a group or other object type
 			{
-				$owner = $thisitem->getOwnerEntity();
-				$this_subtype = $thisitem->getsubtype();
-				echo '<li class="elgg-related-item elgg-related-' . $this_subtype . '"style="width:' . $box_width . '%;" onclick="window.location.href=\''. $thisitem->getURL() . '\';">';
+				$owner = $related_item->getOwnerEntity();
+				$this_subtype = $related_item->getsubtype();
+				echo '<li class="elgg-related-item elgg-related-' . $this_subtype . '"style="width:' . $box_width . '%;" onclick="window.location.href=\''. $related_item->getURL() . '\';">';
 				echo "<div class='elgg-related-items-col'>";
 				switch($this_subtype)
 				{
 					case 'image':
-						$item_guid = $thisitem->getGUID();
-						$title = $thisitem->getTitle();
+						$item_guid = $related_item->getGUID();
+						$title = $related_item->getTitle();
 						$icon = "<img src='" . elgg_get_site_url() . "photos/thumbnail/" . $item_guid . "/thumb/' alt='" . $title . "'/>";	
 						break;
 					case 'videolist_item':
 					case 'izap_videos':
 					case 'file':
-						$icon = elgg_view_entity_icon($thisitem, 'small'); break;
+						$icon = elgg_view_entity_icon($related_item, 'small'); break;
 					default: 			break;
 				}
 				$css_tag = $this_subtype;
@@ -76,19 +75,16 @@
 				$div = "<div class='elgg-related-item-icon elgg-related-" . $css_tag . "-icon'>" . $icon . "</div>";
 				echo $div;
 				$icon = null;
-				echo "<a href='{$thisitem->getURL()}'>" . elgg_get_excerpt($thisitem->title, 100) . "</a>";
+				echo "<a href='{$related_item->getURL()}'>" . elgg_get_excerpt($related_item->title, 100) . "</a>";
 				if($show_dates =='yes')				 
-					echo "<br/><small>" . elgg_view_friendly_time($thisitem->time_created) . "</small>";
+					echo "<br/><small>" . elgg_view_friendly_time($related_item->time_created) . "</small>";
 				if($show_names =='yes')
 					echo "<br/><small>" . $owner->name . "</small>";
 				if($show_tags =='yes')
-					$related_item_tags = elgg_view('output/tags',array('value'=>$related_items[$i]['matched_tags']));
-				echo "<br/><small>" . $related_item_tags . "</small>";
+					echo "<br/><small>" . elgg_view('output/tags',array('value'=>$related_item->tags)) . "</small>";
 				echo "</div></li>";
-				$i++;
 			}
-		  } // end while loop
+		  } // end loop
 	      echo '</ul></div>';
 	  }
-	
 ?>

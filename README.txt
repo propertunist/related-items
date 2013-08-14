@@ -17,10 +17,13 @@ todo:
 groups integration
 links to create a related item (with same tags as present item).
 sidebar widget view.
-page to show full list of related items.
 a way of filtering the list by chooseable sitewide categories.
 improve performance issues - move more processing to SQL from PHP
 
+0.7.1
+changed: optimised algorithm by moving php code to sql
+removed: limit on amount of tags to search for (not needed now code is more efficient)
+---
 0.7
 added: view all related items page
 ---

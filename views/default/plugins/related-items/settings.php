@@ -50,7 +50,7 @@
 		$show_tags = 'yes';
 		elgg_set_plugin_setting('show_tags',$show_tags,'related-items');
 	}			
-	$match_tags = elgg_get_plugin_setting('match_tags','related-items');
+/*	$match_tags = elgg_get_plugin_setting('match_tags','related-items');
 	if (!$match_tags) {
 		$match_tags = 'no';
 		elgg_set_plugin_setting('match_tags',$match_tags,'related-items');
@@ -59,7 +59,8 @@
 	if (!$match_tags_int) {
 		$match_tags_int = 1;
 		elgg_set_plugin_setting('match_tags_int',$match_tags_int,'related-items');
-	}	
+	}
+ */	
 	$max_items = elgg_get_plugin_setting('max_items','related-items');
 	if (!$max_items) {
 		$max_items = 8;
@@ -78,7 +79,7 @@
 	echo "<h3>";
 	echo elgg_echo('related-items:item-select-options');
 	echo "</h3><br/>";
-	echo elgg_echo('related-items:limit-date');
+	echo elgg_echo('related-items:limit-date') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[limit_by_date]',
                         'value' => $limit_by_date,
@@ -89,7 +90,7 @@
                 ));
 	echo elgg_view('input/text', array('name'=>'params[related_date_period]', 'value'=>$related_date_period));
 	echo "<br /><br/>";
-	echo elgg_echo('related-items:selectfrom-owner');
+	echo elgg_echo('related-items:selectfrom-owner') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[selectfrom_owner]',
                         'value' => $selectfrom_owner,
@@ -109,8 +110,8 @@
                                 'no' => elgg_echo('option:no'),
                         ),
                 ));
-	echo "<br/><br/>";	*/
-	echo elgg_echo('related-items:max_tags_to_match');
+	echo "<br/><br/>";	
+	echo elgg_echo('related-items:max_tags_to_match') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[match_tags]',
                         'value' => $match_tags,
@@ -120,11 +121,11 @@
                         ),
                 ));
 	echo elgg_view('input/text', array('name'=>'params[match_tags_int]', 'value'=>$match_tags_int));
-	echo "<br/><br/>";	
-	echo elgg_echo('related-items:max_items');
+	echo "<br/><br/>"; */	
+	echo elgg_echo('related-items:max_items') . ' ';
 	echo elgg_view('input/text', array('name'=>'params[max_items]', 'value'=>$max_items));
 	echo "<br/><br/>";
-	echo elgg_echo('related-items:select_from_thissubtype');
+	echo elgg_echo('related-items:select_from_thissubtype') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[selectfrom_thissubtype]',
                         'value' => $select_from_thissubtype,
@@ -176,7 +177,7 @@
 	echo "<br/><h3>";
 	echo elgg_echo ('related-items:display-options');
 	echo "</h3><br/>";
-	echo elgg_echo('related-items:show_names');
+	echo elgg_echo('related-items:show_names') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[show_names]',
                         'value' => $show_names,
@@ -186,7 +187,7 @@
                         ),
                 ));
 	echo "<br/>";
-	echo elgg_echo('related-items:show_dates');
+	echo elgg_echo('related-items:show_dates') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[show_dates]',
                         'value' => $show_dates,
@@ -196,7 +197,7 @@
                         ),
                 ));	
 	echo "<br/>";				
-	echo elgg_echo('related-items:show_tags');
+	echo elgg_echo('related-items:show_tags') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[show_tags]',
                         'value' => $show_tags,
@@ -206,7 +207,7 @@
                         ),
                 ));
 	echo "<br/>";				
-	echo elgg_echo('related-items:column_count');
+	echo elgg_echo('related-items:column_count') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[column_count]',
                         'value' => $column_count,
@@ -218,7 +219,7 @@
                         ),
                 ));		
 	echo "<br/>";				
-	echo elgg_echo('related-items:jquery_height');
+	echo elgg_echo('related-items:jquery_height') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[jquery_height]',
                         'value' => $jquery_height,

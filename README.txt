@@ -13,13 +13,15 @@ the greater the number of matching tags between the presently viewed item and th
 =============================
 CHANGELOG
 =============================
+
 todo: 
-groups integration
 links to create a related item (with same tags as present item).
 sidebar widget view.
-a way of filtering the list by chooseable sitewide categories.
-improve performance issues - move more processing to SQL from PHP
 
+0.7.2
+fixed: no boxes are now rendered if no related items are available
+changed: missing parameters for get_related_entities functions (+ removed strict input rules for function)
+---
 0.7.1
 changed: optimised algorithm by moving php code to sql
 removed: limit on amount of tags to search for (not needed now code is more efficient)

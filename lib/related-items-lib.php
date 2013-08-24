@@ -11,7 +11,7 @@ if (!function_exists('get_valid_types'))
         return $subtypes;
     }
 }
-function get_related_entities($thisitem, int $list_count, $count = false, int $offset)
+function get_related_entities($thisitem, $list_count, $count = false, $offset)
 {
 	$limit_by_date = elgg_get_plugin_setting('limit_by_date','related-items');
 	$related_date_period = elgg_get_plugin_setting('related_date_period','related-items');	
@@ -52,7 +52,7 @@ function get_related_entities($thisitem, int $list_count, $count = false, int $o
 	    	'metadata_case_sensitive' => FALSE,
 	    	'metadata_values' => $this_items_tags,
 	    	'selects' => array('count(msv.string) as match_count'),
-			'wheres' => array('guid <> ' . $thisitem->getGUID()), // exclude this item from list.
+			'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
 		);
 
 		if ($limit_by_date == 'yes')
@@ -82,15 +82,15 @@ function related_items_page_handler($page) {
 		elgg_push_breadcrumb($crumbs_title,  $subtype . "/owner/$container->username");
 	  }
 	  elgg_push_breadcrumb(elgg_get_excerpt($entity->title, 75), $entity->getURL());
-	  elgg_push_breadcrumb(elgg_echo('related-items:title'));
-	  $offset = (int) max(get_input('offset', 0), 0);
+	 // elgg_push_breadcrumb(elgg_echo('related-items:title'));
+	  $offset = (integer) max(get_input('offset', 0), 0);
 	  $limit = 10;
 	  $entity_list = get_related_entities($entity, $limit, false, $offset);
 
 	  if ($entity_list){
 	  	$title = elgg_echo('related-items:title');
 		$content = elgg_view_entity_list($entity_list,array(
-			'count' => get_related_entities($entity, 0,true),
+			'count' => get_related_entities($entity, 0,true,0),
 			'full_view' => false,
 			'list_type' => 'list',
 			'pagination' => true),$offset, $limit);

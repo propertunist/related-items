@@ -2,14 +2,18 @@
 	$renderto_subtypes = array_filter(explode(',', elgg_get_plugin_setting('renderto_subtypes','related-items')));
 	if(in_array($vars['entity']->getSubtype(),$renderto_subtypes))
 	{
+		$max_related_items = elgg_get_plugin_setting('max_items','related-items');	
+		$related_items = get_related_entities($vars['entity'], intval($max_related_items), false, 0);
+		if (!$related_items == false)
+		{
 		$show_names = elgg_get_plugin_setting('show_names','related-items');
 		$show_dates = elgg_get_plugin_setting('show_dates','related-items');
 		$show_tags = elgg_get_plugin_setting('show_tags','related-items');
-		$max_related_items = elgg_get_plugin_setting('max_items','related-items');	
+
 		$column_count = elgg_get_plugin_setting('column_count','related-items');
 		$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
 		$elgg_path = elgg_get_site_url();
-		$related_items = get_related_entities($vars['entity'], $max_related_items, false);
+
 		  switch($column_count) // this can be moved to a plugin variable
 		  {
 		  	case 1: {$box_width = 97;break;}
@@ -86,5 +90,13 @@
 			}
 		  } // end loop
 	      echo '</ul></div>';
-	  }
+		  return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return false;
+	}
 ?>

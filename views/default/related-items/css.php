@@ -5,9 +5,9 @@
 */
 ?>
 .elgg-related-items-list{
-	display:inline-block;
 	width:100%;
 	padding-top:7px;
+	text-align:center;
 }
 
 .elgg-related-item:hover > div > a{
@@ -28,14 +28,17 @@
 .elgg-related-item {
 	cursor: hand; 
 	cursor: pointer;
-	margin: 3px;
+	margin: 0px 2px;
 	padding: 1%; 
 	-webkit-border-radius:4px;
 	-moz-border-radius:4px;
 	-khtml-border-radius:4px;
 	border-radius:4px;
-	float:left;
+	display:inline-block;
 	overflow:auto;
+    *display:inline; /*IE7*/
+    *zoom:1; /*IE7*/
+   text-align:left;	
 }
 
 .elgg-related-item > div > a{

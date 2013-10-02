@@ -18,6 +18,9 @@ todo:
 links to create a related item (with same tags as present item).
 sidebar widget view.
 
+0.7.3
+changed: centered related items in their list
+changed: padding of list items now fits better with percentages used for box widths 
 0.7.2
 fixed: no boxes are now rendered if no related items are available
 changed: missing parameters for get_related_entities functions (+ removed strict input rules for function)

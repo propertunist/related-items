@@ -28,13 +28,12 @@
 .elgg-related-item {
 	cursor: hand; 
 	cursor: pointer;
-	margin: 0px 2px;
-	padding: 1%; 
+	border-radius:4px;
+	margin: 2px;
 	-webkit-border-radius:4px;
 	-moz-border-radius:4px;
 	-khtml-border-radius:4px;
-	border-radius:4px;
-	display:inline-block;
+	display:inline-table;
 	overflow:auto;
     *display:inline; /*IE7*/
     *zoom:1; /*IE7*/
@@ -53,10 +52,26 @@
 	float:right;
 }
 
+.elgg-related-item-subtype{
+	position:absolute;
+	bottom:0px;
+	right:0px;
+}
+
 .elgg-related-items-col
 {
 	overflow:hidden;
 	position:relative;
+	padding:6px;
+<?php
+	$show_types = elgg_get_plugin_setting('show_types','related-items');
+	if($show_types == 'yes')
+	{
+?>
+	padding-bottom:1.4em;
+<?php
+	}
+?>
 }
 
 .elgg-related-tags{
@@ -76,5 +91,4 @@
 	font-size: 1.4em;
 	font-weight:bold;
 	display: inline-block;
-	padding-btotom
 }

@@ -18,6 +18,16 @@ todo:
 links to create a related item (with same tags as present item).
 sidebar widget view.
 
+0.7.5
+fixed: jquery error on resize window event
+changed: icon grabbing php
+added: option to enable / disable image icons
+added: user icon shows if no item icon is available.
+0.7.4
+fixed: breadcrumb trail for 'view all related items' list is now complete for main subtypes
+added: image icon support for blog_tools and au_sets (pinboards)
+added: item subtype label at bottom of each related item box
+fixed: css issues with chromium
 0.7.3
 changed: centered related items in their list
 changed: padding of list items now fits better with percentages used for box widths 

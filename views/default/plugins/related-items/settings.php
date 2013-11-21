@@ -49,7 +49,17 @@
 	if (!$show_tags) {
 		$show_tags = 'yes';
 		elgg_set_plugin_setting('show_tags',$show_tags,'related-items');
-	}			
+	}	
+	$show_types = elgg_get_plugin_setting('show_types','related-items');
+	if (!$show_types) {
+		$show_types = 'yes';
+		elgg_set_plugin_setting('show_types',$show_types,'related-items');
+	}	
+	$show_icons = elgg_get_plugin_setting('show_icons','related-items');
+	if (!$show_icons) {
+		$show_icons = 'yes';
+		elgg_set_plugin_setting('show_icons',$show_icons,'related-items');
+	}	
 /*	$match_tags = elgg_get_plugin_setting('match_tags','related-items');
 	if (!$match_tags) {
 		$match_tags = 'no';
@@ -206,7 +216,27 @@
                                 'no' => elgg_echo('option:no'),
                         ),
                 ));
-	echo "<br/>";				
+	echo "<br/>";		
+	echo elgg_echo('related-items:show_types') . ' ';
+	echo elgg_view('input/dropdown', array(
+                        'name' => 'params[show_types]',
+                        'value' => $show_types,
+                        'options_values' => array(
+                                'yes' => elgg_echo('option:yes'),
+                                'no' => elgg_echo('option:no'),
+                        ),
+                ));
+	echo "<br/>";	
+	echo elgg_echo('related-items:show_icons') . ' ';
+	echo elgg_view('input/dropdown', array(
+                        'name' => 'params[show_icons]',
+                        'value' => $show_icons,
+                        'options_values' => array(
+                                'yes' => elgg_echo('option:yes'),
+                                'no' => elgg_echo('option:no'),
+                        ),
+                ));
+	echo "<br/>";		
 	echo elgg_echo('related-items:column_count') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[column_count]',

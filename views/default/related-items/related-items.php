@@ -9,12 +9,14 @@
 		$show_names = elgg_get_plugin_setting('show_names','related-items');
 		$show_dates = elgg_get_plugin_setting('show_dates','related-items');
 		$show_tags = elgg_get_plugin_setting('show_tags','related-items');
+		$show_types = elgg_get_plugin_setting('show_types','related-items');
+		$show_icons = elgg_get_plugin_setting('show_icons','related-items');
 
 		$column_count = elgg_get_plugin_setting('column_count','related-items');
 		$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
 		$elgg_path = elgg_get_site_url();
 
-		  switch($column_count) // this can be moved to a plugin variable
+		  switch($column_count)
 		  {
 		  	case 1: {$box_width = 97;break;}
 			case 2: {$box_width = 47;break;}
@@ -22,20 +24,27 @@
 			default: {$box_width = 22;break;}
 		  }
 		  if ($jquery_height == 'yes')
-	      	echo "<script type=\"text/javascript\" >
+	     	echo "<script type=\"text/javascript\" >
+
 	      	$(document).ready(function(){
-	      		var maxHeight = 0;
-	      		var set_height = function(column) {
-	      			column = $(column);
-	      			column.each(function(){
+	      		   	function set_height(item){
+	      			var maxHeight = 0;
+	      			item = $(item);
+	      			item.css(\"height\" , \"auto\");
+	      			item.each(function(){
 	      				if($(this).height() > maxHeight){
 	      					maxHeight = $(this).height();
 	      				}
 	      			});
-	      			column.height(maxHeight);
-	      		}
-	      		set_height('.elgg-related-items-col');
-	      		});      		$(window).resize(set_height('.elgg-related-items-col'));
+	      			item.css(\"height\" , maxHeight);
+	      			}
+	      		    
+	      		    set_height('.elgg-related-items-col');
+	      		      $(window).resize(function(){
+	      		      	
+	      		      	set_height('.elgg-related-items-col');
+	      		      	});
+	      		});      	
 	      	</script>";
 		  echo '<div class="elgg-related-items">';
 	      echo "<div class='elgg-related-items-title'>" . elgg_echo('related-items:title') . "</div>";
@@ -53,32 +62,49 @@
 			if ($related_item instanceof ElggObject) // ensure the item is not a group or other object type
 			{
 				$owner = $related_item->getOwnerEntity();
+				$icon_url = '';
+				$icon = null;
 				$this_subtype = $related_item->getsubtype();
 				echo '<li class="elgg-related-item elgg-related-' . $this_subtype . '"style="width:' . $box_width . '%;" onclick="window.location.href=\''. $related_item->getURL() . '\';">';
 				echo "<div class='elgg-related-items-col'>";
-				switch($this_subtype)
-				{
-					case 'image':
-						$item_guid = $related_item->getGUID();
-						$title = $related_item->getTitle();
-						$icon = "<img src='" . elgg_get_site_url() . "photos/thumbnail/" . $item_guid . "/thumb/' alt='" . $title . "'/>";	
-						break;
-					case 'videolist_item':
-					case 'izap_videos':
-					case 'file':
-						$icon = elgg_view_entity_icon($related_item, 'small'); break;
-					default: 			break;
+				if($show_icons =='yes')
+				{		
+					switch($this_subtype)
+					{
+						case 'image':
+							$icon_url = $elgg_path . "photos/thumbnail/" . $related_item->getGUID() . "/thumb/";
+							break;
+						case 'videolist_item':
+						case 'izap_videos':
+						case 'file':
+						case 'au_set':
+							$icon_url = $related_item->getIconURL('medium');						
+							break;
+						case 'blog':
+							if ($related_item->icontime) {
+								$icon_url = $related_item->getIconURL('medium');
+							} else {
+								$icon_url = $owner->getIconURL('medium');
+							}
+							break;
+						default: 			break;
+					}
+					
+					if (empty($icon_url))
+						$icon_url = $owner->getIconURL('medium');
+	
+					$icon = elgg_view("output/url", array(
+							"href" => $related_item->getURL(), 
+							"text" => elgg_view("output/img", array(
+							"src" => $icon_url, "alt" => $related_item->title))));
+	
+					$div = "<div class='elgg-related-item-icon elgg-related-" . $this_subtype . "-icon'>" . $icon . "</div>";
+					echo $div;
 				}
-				$css_tag = $this_subtype;
-				if (!empty($icon))
-					$css_tag .= '-gfx';
-				else
-				{
-					$icon ="&nbsp;" ;	
-				}
-				$div = "<div class='elgg-related-item-icon elgg-related-" . $css_tag . "-icon'>" . $icon . "</div>";
-				echo $div;
-				$icon = null;
+
+				$type_label = elgg_echo('item:object:' . $this_subtype);
+				$type_label = substr($type_label,0,strlen($type_label)-1);
+
 				echo "<a href='{$related_item->getURL()}'>" . elgg_get_excerpt($related_item->title, 100) . "</a>";
 				if($show_dates =='yes')				 
 					echo "<br/><small>" . elgg_view_friendly_time($related_item->time_created) . "</small>";
@@ -86,6 +112,8 @@
 					echo "<br/><small>" . $owner->name . "</small>";
 				if($show_tags =='yes')
 					echo "<br/><small>" . elgg_view('output/tags',array('value'=>$related_item->tags)) . "</small>";
+				if($show_types == 'yes')
+					echo "<div class='elgg-related-item-subtype'><small>" . $type_label . "</small></div>";
 				echo "</div></li>";
 			}
 		  } // end loop

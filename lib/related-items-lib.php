@@ -72,17 +72,51 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
 function related_items_page_handler($page) {
 	  $entity = get_entity($page[0]);
 	  if ($entity instanceof ElggObject){
-	  elgg_set_page_owner_guid($entity->guid);
+	  elgg_set_page_owner_guid($entity->getContainerGUID());
 	  $subtype = $entity->getSubtype();
 	  $container = $entity->getContainerEntity();
-	  $crumbs_title = $container->name;
-	  if (elgg_instanceof($container, 'group')) {
-		elgg_push_breadcrumb($crumbs_title, $subtype . "/group/$container->guid/all");
-	  } else {
-		elgg_push_breadcrumb($crumbs_title,  $subtype . "/owner/$container->username");
+	  $owner = elgg_get_page_owner_entity();
+	  switch ($subtype)
+	  {
+	  	case 'image':
+			elgg_push_breadcrumb(elgg_echo('photos'), 'photos/siteimagesall');
+			elgg_push_breadcrumb(elgg_echo('tidypics:albums'), 'photos/all');
+			$subtype = 'photos';
+			break;
+		case 'page_top':
+			elgg_push_breadcrumb(elgg_echo('pages'), 'pages/all');
+			$subtype = 'pages';
+			break;
+		case 'videolist_item':
+			elgg_push_breadcrumb(elgg_echo('videolist'), 'videolist/all');
+			$subtype = 'videolist';
+			break;		
+		case 'bookmarks':
+			elgg_push_breadcrumb(elgg_echo('bookmarks'), 'bookmarks/all');
+			break;
+		case 'file':
+			elgg_push_breadcrumb(elgg_echo('file'), 'file/all');
+			break;	
+		case 'blog':
+			elgg_push_breadcrumb(elgg_echo('blog:blogs'), 'blog/all');
+			break;	
+		case 'au_set':
+			elgg_push_breadcrumb(elgg_echo('au_set'), 'pinboards/all');
+			break;
+		default: break;
 	  }
-	  elgg_push_breadcrumb(elgg_get_excerpt($entity->title, 75), $entity->getURL());
-	 // elgg_push_breadcrumb(elgg_echo('related-items:title'));
+
+	  if (elgg_instanceof($container, 'group')) { //container
+		elgg_push_breadcrumb($owner->name, $subtype . "/group/$owner->guid/all");
+	  } else {
+		elgg_push_breadcrumb($owner->name,  $subtype . "/owner/$owner->username");
+	  } 
+	  if ($subtype == 'photos'){ // album
+			elgg_push_breadcrumb($container->getTitle(), $container->getURL());
+	  }
+
+	  elgg_push_breadcrumb(elgg_get_excerpt($entity->title, 75), $entity->getURL()); // item
+	  elgg_push_breadcrumb(elgg_echo('related-items:title'));
 	  $offset = (integer) max(get_input('offset', 0), 0);
 	  $limit = 10;
 	  $entity_list = get_related_entities($entity, $limit, false, $offset);
@@ -101,7 +135,7 @@ function related_items_page_handler($page) {
 	  }
 	  
 	  $layout = elgg_view_layout('content', array(
-		  'title' => elgg_view_title($title),
+		  'title' => $title,
 		  'content' => $content,
 		  'filter' => false,
 	  ));

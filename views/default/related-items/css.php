@@ -88,3 +88,9 @@
 	font-weight:bold;
 	display: inline-block;
 }
+
+.elgg-related-item-icon img, .elgg-related-item-icon
+ {
+     width: 62px;
+     height: 62px;
+ }

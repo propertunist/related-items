@@ -114,8 +114,34 @@
 					echo $div;
 				}
 
-				$type_label = elgg_echo('item:object:' . $this_subtype);
-				$type_label = substr($type_label,0,strlen($type_label)-1);
+                 switch ($this_subtype)
+                  {
+                    case 'image':
+                    case 'album':   
+                    case 'au_set':
+                        $type_label = elgg_echo ($this_subtype);
+                        break;
+                    case 'page_top':
+                    case 'pages':
+                    case 'bookmarks':
+                    case 'videolist_item':                                             
+                        {
+                            $type_label = elgg_echo ('related_items:' . $this_subtype);
+                            break;
+                        }    
+                    case 'file':
+                    case 'blog':
+                        {
+                            $type_label = elgg_echo ($this_subtype . ':' . $this_subtype);
+                            break;
+                        }  
+                    default:                
+                        {
+                            $type_label = elgg_echo('item:object:' . $this_subtype);
+                            break;
+                        }
+                  }
+			//	$type_label = substr($type_label,0,strlen($type_label)-1);
 
 				echo "<a href='{$related_item->getURL()}'>" . elgg_get_excerpt($related_item->title, 100) . "</a>";
 				if($show_dates =='yes')				 

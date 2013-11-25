@@ -17,7 +17,7 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
 	$related_date_period = elgg_get_plugin_setting('related_date_period','related-items');	
 	$created_time_lower = strtotime($related_date_period) ? strtotime($related_date_period) : strtotime('-1 year');
 	$selectfrom_owner = elgg_get_plugin_setting('selectfrom_owner','related-items');
-	$selectfrom_thissubtype = elgg_get_plugin_setting('selectfrom_thissubtype','related-items');
+	$selectfrom_thissubtype = elgg_get_plugin_setting('select_from_this_subtype','related-items');
 	$dbprefix = elgg_get_config('dbprefix');
 	if ($selectfrom_thissubtype == 'no')
 	{

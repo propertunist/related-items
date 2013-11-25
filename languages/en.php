@@ -28,6 +28,10 @@ $english = array(
 	'related-items:option:bottom' => 'After comments',
 	'related-items:option:top' => 'Above comments',
 	'related-items:comment_position' => 'Where to show the list of related items in relation to the comments lists?: ',
+	'related_items:pages' => 'page',
+	'related_items:page_top' => 'top level page',
+	'related_items:bookmarks' => 'bookmark',
+	'related_items:videolist_item' => 'video',
 );
 					
 add_translation("en", $english);

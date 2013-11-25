@@ -25,10 +25,10 @@
 		$selectfrom_subtypes = array();
 		elgg_set_plugin_setting('selectfrom_subtypes',$selectfrom_subtypes,'related-items');
 	}	
-	$selectfrom_thissubtype = elgg_get_plugin_setting('selectfrom_thissubtype','related-items');
-	if (!$selectfrom_thissubtype) {
-		$selectfrom_thissubtype = 'no';
-		elgg_set_plugin_setting('selectfrom_thissubtype',$selectfrom_thissubtype,'related-items');
+	$select_from_this_subtype = elgg_get_plugin_setting('select_from_this_subtype','related-items');
+	if (!$select_from_this_subtype) {
+		$select_from_this_subtype = 'no';
+		elgg_set_plugin_setting('select_from_this_subtype',$select_from_this_subtype,'related-items');
 	}		
 	$renderto_subtypes = elgg_get_plugin_setting('renderto_subtypes','related-items');
 	if (!$renderto_subtypes) {
@@ -144,8 +144,8 @@
 	echo "<br/><br/>";
 	echo elgg_echo('related-items:select_from_thissubtype') . ' ';
 	echo elgg_view('input/dropdown', array(
-                        'name' => 'params[selectfrom_thissubtype]',
-                        'value' => $select_from_thissubtype,
+                        'name' => 'params[select_from_this_subtype]',
+                        'value' => $select_from_this_subtype,
                         'options_values' => array(
                                 'no' => elgg_echo('option:no'),
                                 'yes' => elgg_echo('option:yes'),                                

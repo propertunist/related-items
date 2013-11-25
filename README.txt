@@ -18,10 +18,13 @@ todo:
 links to create a related item (with same tags as present item).
 sidebar widget view.
 
+0.7.7
+fixed: related item subtype lable pluralisation
+fixed: admin option for subtype selection was being ignored
+fixed: set css size of thumbnail images
 0.7.6
 fixed: related item list now fits horizontally if item count is less than columns chosen in admin
 added: option to place related items before or after comments
-
 0.7.5
 fixed: jquery error on resize window event
 changed: icon grabbing php

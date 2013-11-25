@@ -10,11 +10,11 @@
 	text-align:center;
 }
 
-.elgg-related-item:hover > div > a{
+.elgg-related-item:hover > a{
 	color:#555555;
 }
 
-.elgg-related-item > div > a:hover{
+.elgg-related-item > a:hover{
 	text-decoration: none;
 }
 
@@ -37,10 +37,22 @@
 	overflow:auto;
     *display:inline; /*IE7*/
     *zoom:1; /*IE7*/
-   text-align:left;	
+    text-align:left;	
+	overflow:hidden;
+	position:relative;
+	padding:6px;
+<?php
+	$show_types = elgg_get_plugin_setting('show_types','related-items');
+	if($show_types == 'yes')
+	{
+?>
+	padding-bottom:1.4em;
+<?php
+	}
+?>   
 }
 
-.elgg-related-item > div > a{
+.elgg-related-item > a{
 	font-weight:bold;
 }
 
@@ -54,24 +66,8 @@
 
 .elgg-related-item-subtype{
 	position:absolute;
-	bottom:0px;
-	right:0px;
-}
-
-.elgg-related-items-col
-{
-	overflow:hidden;
-	position:relative;
-	padding:6px;
-<?php
-	$show_types = elgg_get_plugin_setting('show_types','related-items');
-	if($show_types == 'yes')
-	{
-?>
-	padding-bottom:1.4em;
-<?php
-	}
-?>
+	bottom:1px;
+	right:1px;
 }
 
 .elgg-related-tags{

@@ -15,14 +15,26 @@
 		$column_count = elgg_get_plugin_setting('column_count','related-items');
 		$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
 		$elgg_path = elgg_get_site_url();
-
-		  switch($column_count)
-		  {
-		  	case 1: {$box_width = 97;break;}
-			case 2: {$box_width = 47;break;}
-			case 3: {$box_width = 30;break;}
-			default: {$box_width = 22;break;}
-		  }
+          if (count($related_items)< $column_count) // if the amount of related items is less than the amount of columns set in admin
+          {
+              switch(count($related_items))
+              {
+                case 2: {$box_width = 47;break;}
+                case 3: {$box_width = 30;break;}
+                case 1: 
+                default: {$box_width = 97;break;}
+              }
+          }
+          else
+          {
+              switch($column_count)
+    		  {
+    		  	case 1: {$box_width = 97;break;}
+    			case 2: {$box_width = 47;break;}
+    			case 3: {$box_width = 30;break;}
+    			default: {$box_width = 22;break;}
+    		  }
+          }
 		  if ($jquery_height == 'yes')
 	     	echo "<script type=\"text/javascript\" >
 
@@ -39,10 +51,10 @@
 	      			item.css(\"height\" , maxHeight);
 	      			}
 	      		    
-	      		    set_height('.elgg-related-items-col');
+	      		    set_height('.elgg-related-item');
 	      		      $(window).resize(function(){
 	      		      	
-	      		      	set_height('.elgg-related-items-col');
+	      		      	set_height('.elgg-related-item');
 	      		      	});
 	      		});      	
 	      	</script>";
@@ -66,7 +78,7 @@
 				$icon = null;
 				$this_subtype = $related_item->getsubtype();
 				echo '<li class="elgg-related-item elgg-related-' . $this_subtype . '"style="width:' . $box_width . '%;" onclick="window.location.href=\''. $related_item->getURL() . '\';">';
-				echo "<div class='elgg-related-items-col'>";
+
 				if($show_icons =='yes')
 				{		
 					switch($this_subtype)
@@ -114,7 +126,7 @@
 					echo "<br/><small>" . elgg_view('output/tags',array('value'=>$related_item->tags)) . "</small>";
 				if($show_types == 'yes')
 					echo "<div class='elgg-related-item-subtype'><small>" . $type_label . "</small></div>";
-				echo "</div></li>";
+				echo "</li>";
 			}
 		  } // end loop
 	      echo '</ul></div>';

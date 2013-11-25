@@ -25,6 +25,9 @@ $english = array(
 	'related-items:jquery_height' => 'Use jquery to set all boxes the same height?: ',
 	'related-items:none' => 'No related items were found',
 	'related-items:view-all' => 'View all related items',	
+	'related-items:option:bottom' => 'After comments',
+	'related-items:option:top' => 'Above comments',
+	'related-items:comment_position' => 'Where to show the list of related items in relation to the comments lists?: ',
 );
 					
 add_translation("en", $english);

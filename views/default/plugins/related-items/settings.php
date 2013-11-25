@@ -86,6 +86,13 @@
 		$column_count = 'yes';
 		elgg_set_plugin_setting('jquery_height',$jquery_height,'related-items');
 	}	
+
+    $comment_position = elgg_get_plugin_setting('comment_position','related-items');
+    if (!$comment_position) {
+        $comment_position = 'top';
+        elgg_set_plugin_setting('comment_position',$comment_position,'related-items');
+    }       
+    
 	echo "<h3>";
 	echo elgg_echo('related-items:item-select-options');
 	echo "</h3><br/>";
@@ -149,7 +156,8 @@
 	echo "<br/><br/>";
 
 	$content = '<div class="dv_selectfrom_subtypes">';
-	$valid_types = get_valid_types(array('thewire'));
+	$valid_types = get_valid_types(array('thewire', 'comment'));
+
 	$active_from_subtypes = array_filter(explode(',', $vars["entity"]->selectfrom_subtypes));
 	$content .= elgg_view('input/checkboxes',array(
 										'name'=>'from_subtypes',
@@ -258,6 +266,18 @@
                                 'no' => elgg_echo('option:no'),                         
                         ),
                 ));		
+                
+    echo "<br/>";               
+    echo elgg_echo('related-items:comment_position') . ' ';
+    echo elgg_view('input/dropdown', array(
+                        'name' => 'params[comment_position]',
+                        'value' => $comment_position,
+                        'options_values' => array(
+                                'top' => elgg_echo('related-items:option:top'),
+                                'bottom' => elgg_echo('related-items:option:bottom'),                         
+                        ),
+                ));                 
+                
 ?>	
 </div>
 <script type="text/javascript">

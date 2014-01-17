@@ -18,6 +18,8 @@ todo:
 links to create a related item (with same tags as present item).
 sidebar widget view.
 
+0.7.8
+fixed: items being shown when no tags are present for current item
 0.7.7
 fixed: related item subtype lable pluralisation
 fixed: admin option for subtype selection was being ignored

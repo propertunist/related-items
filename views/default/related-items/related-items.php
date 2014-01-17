@@ -119,8 +119,10 @@
                     case 'image':
                     case 'album':   
                     case 'au_set':
-                        $type_label = elgg_echo ($this_subtype);
-                        break;
+                        {
+                            $type_label = elgg_echo ($this_subtype);
+                            break;
+                        }
                     case 'page_top':
                     case 'pages':
                     case 'bookmarks':

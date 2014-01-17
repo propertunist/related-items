@@ -31,7 +31,7 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
 	$match_tags_int = elgg_get_plugin_setting('match_tags_int','related-items');
 
 	$this_items_tags = $thisitem->tags;
-  	if (isset($this_items_tags)) //if the current item has tags
+  	if ($this_items_tags) //if the current item has tags
   	{
   		if (is_array($this_items_tags)) //if the current item has more than 1 tag
 		{	

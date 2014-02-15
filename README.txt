@@ -18,6 +18,10 @@ todo:
 links to create a related item (with same tags as present item).
 sidebar widget view.
 
+0.7.9
+fixed: pagination missing on 'view all related items' page
+added: count of related items to 'view all related items' link
+changed: 'view all related items' link is only rendered when more are available than shown on the current item's page
 0.7.8
 fixed: items being shown when no tags are present for current item
 0.7.7

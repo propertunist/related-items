@@ -6,6 +6,7 @@
 		$related_items = get_related_entities($vars['entity'], intval($max_related_items), false, 0);
 		if (!$related_items == false)
 		{
+		$total_related_items = get_related_entities($vars['entity'], 0, TRUE,0);
 		$show_names = elgg_get_plugin_setting('show_names','related-items');
 		$show_dates = elgg_get_plugin_setting('show_dates','related-items');
 		$show_tags = elgg_get_plugin_setting('show_tags','related-items');
@@ -14,10 +15,11 @@
 
 		$column_count = elgg_get_plugin_setting('column_count','related-items');
 		$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
+        $related_items_count = count($related_items);
 		$elgg_path = elgg_get_site_url();
-          if (count($related_items)< $column_count) // if the amount of related items is less than the amount of columns set in admin
+          if ($related_items_count< $column_count) // if the amount of related items is less than the amount of columns set in admin
           {
-              switch(count($related_items))
+              switch($related_items_count)
               {
                 case 2: {$box_width = 47;break;}
                 case 3: {$box_width = 30;break;}
@@ -61,12 +63,15 @@
 		  echo '<div class="elgg-related-items">';
 	      echo "<div class='elgg-related-items-title'>" . elgg_echo('related-items:title') . "</div>";
 	      echo "<div class='elgg-related-items-title-icon'></div>";
-		  echo "<div class='elgg-related-items-all-link'>";
-		  echo elgg_view('output/url', array(
-				'href' => $elgg_path . 'related/' . $vars['entity']->guid,
-				'text' => elgg_echo('related-items:view-all'),
-				'is_trusted' => true,));
-	      echo "</div>";
+          if ($total_related_items > $related_items_count)
+          {
+    		  echo "<div class='elgg-related-items-all-link'>";
+    		  echo elgg_view('output/url', array(
+    				'href' => $elgg_path . 'related/' . $vars['entity']->guid,
+    				'text' => elgg_echo('related-items:view-all', array($total_related_items)),
+    				'is_trusted' => true,));
+    	      echo "</div>";
+          }
 	      echo '<ul class="elgg-related-items-list">';
 
 		  foreach ($related_items as $related_item)
@@ -104,13 +109,8 @@
 					
 					if (empty($icon_url))
 						$icon_url = $owner->getIconURL('medium');
-	
-					$icon = elgg_view("output/url", array(
-							"href" => $related_item->getURL(), 
-							"text" => elgg_view("output/img", array(
-							"src" => $icon_url, "alt" => $related_item->title))));
-	
-					$div = "<div class='elgg-related-item-icon elgg-related-" . $this_subtype . "-icon'>" . $icon . "</div>";
+
+					$div = "<div style='background-image: url(\"". $icon_url . "\");' class='elgg-related-item-icon elgg-related-" . $this_subtype . "-icon'>&nbsp;</div>";
 					echo $div;
 				}
 

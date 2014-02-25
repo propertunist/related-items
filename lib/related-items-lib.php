@@ -31,7 +31,7 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
 	$match_tags_int = elgg_get_plugin_setting('match_tags_int','related-items');
 
 	$this_items_tags = $thisitem->tags;
-  	if (isset($this_items_tags)) //if the current item has tags
+  	if ($this_items_tags) //if the current item has tags
   	{
   		if (is_array($this_items_tags)) //if the current item has more than 1 tag
 		{	
@@ -123,11 +123,12 @@ function related_items_page_handler($page) {
 
 	  if ($entity_list){
 	  	$title = elgg_echo('related-items:title');
-		$content = elgg_view_entity_list($entity_list,array(
-			'count' => get_related_entities($entity, 0,true,0),
-			'full_view' => false,
-			'list_type' => 'list',
-			'pagination' => true),$offset, $limit);
+		$content = elgg_view_entity_list($entity_list,array('count' => get_related_entities($entity, 0,true,0),
+		                                                    'offset' => $offset,
+		                                                    'limit' => $limit,
+		                                                    'full_view' => false,
+		                                                    'list_type_toggle' => false,
+		                                                    'pagination' => true));
 	  }
 	  else {
 	  	$title = elgg_echo('related-items:title');

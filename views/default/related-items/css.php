@@ -89,8 +89,13 @@
 	display: inline-block;
 }
 
-.elgg-related-item-icon img, .elgg-related-item-icon
+.elgg-related-item-icon
  {
      width: 62px;
      height: 62px;
+     background-size:cover;
+     background-position: 50% 50%;
+     background-repeat: no-repeat;
+     margin-left: 3px;
+     margin-bottom: 5px;
  }

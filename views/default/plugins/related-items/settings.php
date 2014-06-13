@@ -1,5 +1,10 @@
 <div class="related-items-panel">
 <?php 
+    $select_related = elgg_get_plugin_setting('select_related','related-items');
+    if (!$select_related) {
+        $select_related = 'related';
+        elgg_set_plugin_setting('select_related',$select_related,'related-items');
+    }   
 	$limit_by_date = elgg_get_plugin_setting('limit_by_date','related-items');
 	if (!$limit_by_date) {
 		$limit_by_date = 'no';
@@ -45,6 +50,11 @@
 		$show_dates = 'yes';
 		elgg_set_plugin_setting('show_dates',$show_dates,'related-items');
 	}	
+    $show_timestamps = elgg_get_plugin_setting('show_timestamps','related-items');
+    if (!$show_timestamps) {
+        $show_timestamps = 'no';
+        elgg_set_plugin_setting('show_timestamps',$show_timestamps,'related-items');
+    }       
 	$show_tags = elgg_get_plugin_setting('show_tags','related-items');
 	if (!$show_tags) {
 		$show_tags = 'yes';
@@ -96,6 +106,17 @@
 	echo "<h3>";
 	echo elgg_echo('related-items:item-select-options');
 	echo "</h3><br/>";
+    
+    echo elgg_echo('related-items:select-related') . ' ';
+    echo elgg_view('input/dropdown', array(
+                        'name' => 'params[select_related]',
+                        'value' => $select_related,
+                        'options_values' => array(
+                                'related' => elgg_echo('related-items:title'),
+                                'more' => elgg_echo('related-items:more-items'),
+                        ),
+                ));    
+    echo "<br /><br/>";
 	echo elgg_echo('related-items:limit-date') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[limit_by_date]',
@@ -159,9 +180,20 @@
 	$valid_types = get_valid_types(array('thewire', 'comment'));
 
 	$active_from_subtypes = array_filter(explode(',', $vars["entity"]->selectfrom_subtypes));
+
+    $checked_subtypes = array();
+    foreach ($valid_types as $valid_type)
+    {
+        if (in_array($valid_type, $active_from_subtypes))
+        {
+            $checked_subtypes[] = $valid_type;
+        }
+    }
+
+   // $vars["entity"]->selectfrom_subtypes = $checked_subtypes;
 	$content .= elgg_view('input/checkboxes',array(
 										'name'=>'from_subtypes',
-										'value'=>$active_from_subtypes,
+										'value'=>$checked_subtypes,
 										'options'=>$valid_types,
 										'default' => false));
 	$content .= '</div>';
@@ -214,7 +246,17 @@
                                 'no' => elgg_echo('option:no'),
                         ),
                 ));	
-	echo "<br/>";				
+	echo "<br/>";	
+    echo elgg_echo('related-items:show_timestamps') . ' ';
+    echo elgg_view('input/dropdown', array(
+                        'name' => 'params[show_timestamps]',
+                        'value' => $timestamps,
+                        'options_values' => array(
+                                'yes' => elgg_echo('option:yes'),
+                                'no' => elgg_echo('option:no'),
+                        ),
+                )); 
+    echo "<br/>";       			
 	echo elgg_echo('related-items:show_tags') . ' ';
 	echo elgg_view('input/dropdown', array(
                         'name' => 'params[show_tags]',

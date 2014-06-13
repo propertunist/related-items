@@ -25,7 +25,7 @@ function related_items_init()
                 break;
             }
     }
-	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'related_items_owner_block');
+
     elgg_register_page_handler('related', 'related_items_page_handler');
    	elgg_extend_view('page/elements/comments', 'related-items/related-items', $comment_position);
 	elgg_extend_view('discussion/replies', 'related-items/related-items', 0);

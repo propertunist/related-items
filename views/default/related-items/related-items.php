@@ -7,8 +7,10 @@
 		if (!$related_items == false)
 		{
 		$total_related_items = get_related_entities($vars['entity'], 0, TRUE,0);
+        $select_related = elgg_get_plugin_setting('select_related','related-items');
 		$show_names = elgg_get_plugin_setting('show_names','related-items');
 		$show_dates = elgg_get_plugin_setting('show_dates','related-items');
+        $show_timestamps = elgg_get_plugin_setting('show_timestamps','related-items');
 		$show_tags = elgg_get_plugin_setting('show_tags','related-items');
 		$show_types = elgg_get_plugin_setting('show_types','related-items');
 		$show_icons = elgg_get_plugin_setting('show_icons','related-items');
@@ -17,26 +19,7 @@
 		$jquery_height = elgg_get_plugin_setting('jquery_height','related-items');
         $related_items_count = count($related_items);
 		$elgg_path = elgg_get_site_url();
-          if ($related_items_count< $column_count) // if the amount of related items is less than the amount of columns set in admin
-          {
-              switch($related_items_count)
-              {
-                case 2: {$box_width = 47;break;}
-                case 3: {$box_width = 30;break;}
-                case 1: 
-                default: {$box_width = 97;break;}
-              }
-          }
-          else
-          {
-              switch($column_count)
-    		  {
-    		  	case 1: {$box_width = 97;break;}
-    			case 2: {$box_width = 47;break;}
-    			case 3: {$box_width = 30;break;}
-    			default: {$box_width = 22;break;}
-    		  }
-          }
+
 		  if ($jquery_height == 'yes')
 	     	echo "<script type=\"text/javascript\" >
 
@@ -61,9 +44,17 @@
 	      		});      	
 	      	</script>";
 		  echo '<div class="elgg-related-items">';
-	      echo "<div class='elgg-related-items-title'>" . elgg_echo('related-items:title') . "</div>";
-	      echo "<div class='elgg-related-items-title-icon'></div>";
-          if ($total_related_items > $related_items_count)
+	      echo "<div class='elgg-related-items-title'>";
+	      if ($select_related == 'related')
+          {
+	           echo elgg_echo('related-items:title');
+               echo "<div class='elgg-related-items-title-icon'></div>";
+          }
+          else
+              echo elgg_echo('related-items:more-items');
+          echo "</div>";
+
+          if (($total_related_items > $related_items_count)&&($select_related == 'related'))
           {
     		  echo "<div class='elgg-related-items-all-link'>";
     		  echo elgg_view('output/url', array(
@@ -72,7 +63,7 @@
     				'is_trusted' => true,));
     	      echo "</div>";
           }
-	      echo '<ul class="elgg-related-items-list">';
+	      echo '<div class="elgg-related-items-list" style="column-count:' . $column_count . ';-khtml-column-count:' . $column_count . ';-webkit-column-count:' . $column_count . ';-moz-column-count:' . $column_count . '; ">';
 
 		  foreach ($related_items as $related_item)
 	      {
@@ -82,14 +73,14 @@
 				$icon_url = '';
 				$icon = null;
 				$this_subtype = $related_item->getsubtype();
-				echo '<li class="elgg-related-item elgg-related-' . $this_subtype . '"style="width:' . $box_width . '%;" onclick="window.location.href=\''. $related_item->getURL() . '\';">';
+				echo "<div class=\"elgg-related-item elgg-related-" . $this_subtype . "\" onclick=\"location.href='". $related_item->getURL() . "';\">";
 
 				if($show_icons =='yes')
 				{		
 					switch($this_subtype)
 					{
 						case 'image':
-							$icon_url = $elgg_path . "photos/thumbnail/" . $related_item->getGUID() . "/thumb/";
+							$icon_url = $elgg_path . "photos/thumbnail/" . $related_item->getGUID() . "/small/";
 							break;
 						case 'videolist_item':
 						case 'izap_videos':
@@ -110,8 +101,8 @@
 					if (empty($icon_url))
 						$icon_url = $owner->getIconURL('medium');
 
-					$div = "<div style='background-image: url(\"". $icon_url . "\");' class='elgg-related-item-icon elgg-related-" . $this_subtype . "-icon'>&nbsp;</div>";
-					echo $div;
+					$img = "<div class=\"elgg-related-item-icon-holder\"><a href=\"" . $related_item->getURL() . "\"><img src=\"". $icon_url . "\" class=\"elgg-related-item-icon elgg-related-" . $this_subtype . "-icon\"/ width=\"10\" height=\"20\"></a></div>";
+					echo $img;
 				}
 
                  switch ($this_subtype)
@@ -143,21 +134,36 @@
                             break;
                         }
                   }
-			//	$type_label = substr($type_label,0,strlen($type_label)-1);
+			    echo '<div class="elgg-related-item-title">';
+                if ($related_item->title)
+                {
+				    echo '<a href="' . $related_item->getURL() . '">' . elgg_get_excerpt($related_item->title, 100);
+                    echo "</a><br/>";
+                }
+                if($show_names =='yes')
+                    echo "<small>" . elgg_echo ('by') . ' ' . $owner->name . "</small>";
 
-				echo "<a href='{$related_item->getURL()}'>" . elgg_get_excerpt($related_item->title, 100) . "</a>";
-				if($show_dates =='yes')				 
-					echo "<br/><small>" . elgg_view_friendly_time($related_item->time_created) . "</small>";
-				if($show_names =='yes')
-					echo "<br/><small>" . $owner->name . "</small>";
+				if($show_dates =='yes')		
+                {
+                    if ($show_timestamps == 'yes')
+                        $time = date("D, d M y H:i:s",$related_item->time_created);
+                    else
+                        $time = elgg_view_friendly_time($related_item->time_created);	 
+					echo "<br/><small>" . $time . "</small>";
+                }
+
 				if($show_tags =='yes')
 					echo "<br/><small>" . elgg_view('output/tags',array('value'=>$related_item->tags)) . "</small>";
+ 
 				if($show_types == 'yes')
 					echo "<div class='elgg-related-item-subtype'><small>" . $type_label . "</small></div>";
-				echo "</li>";
+
+				echo "</div>";
+                echo '<div class="clearfloat"></div>';
+                echo "</div>";
 			}
 		  } // end loop
-	      echo '</ul></div>';
+	      echo '</div></div>';
 		  return true;
 		}
 		else {

@@ -13,6 +13,7 @@ if (!function_exists('get_valid_types'))
 }
 function get_related_entities($thisitem, $list_count, $count = false, $offset)
 {
+    $select_related = elgg_get_plugin_setting('select_related','related-items');
 	$limit_by_date = elgg_get_plugin_setting('limit_by_date','related-items');
 	$related_date_period = elgg_get_plugin_setting('related_date_period','related-items');	
 	$created_time_lower = strtotime($related_date_period) ? strtotime($related_date_period) : strtotime('-1 year');
@@ -27,49 +28,67 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
 	{
 		$selectfrom_subtypes = $thisitem->getSubtype();	
 	}
-	$match_tags = elgg_get_plugin_setting('match_tags','related-items');	
-	$match_tags_int = elgg_get_plugin_setting('match_tags_int','related-items');
+    if ($select_related == 'related')
+    {
+    	$match_tags = elgg_get_plugin_setting('match_tags','related-items');	
+    	$match_tags_int = elgg_get_plugin_setting('match_tags_int','related-items');
+    
+    	$this_items_tags = $thisitem->tags;
+      	if ($this_items_tags) //if the current item has tags
+      	{
+      		if (is_array($this_items_tags)) //if the current item has more than 1 tag
+    		{	
+    			$this_items_tags = array_unique($this_items_tags); // create unique list
+    		}
+    		else {
+    			$this_items_tags = array($this_items_tags);
+    		}
+    		$options = array(
+    	    	'type' => 'object', 
+    	    	'subtypes' => $selectfrom_subtypes,
+    	    	'order_by' => 'match_count DESC',
+    			'group_by' => 'e.guid',
+    	    	'limit' => $list_count,
+    	    	'offset' => $offset,
+    	    	'count' => $count,
+    	    	'metadata_names' => 'tags',
+    	    	'metadata_case_sensitive' => FALSE,
+    	    	'metadata_values' => $this_items_tags,
+    	    	'selects' => array('count(msv.string) as match_count'),
+    			'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
+    		);
+  
+    	}
+    }
+    else
+    {
+        $options = array(
+                'type' => 'object', 
+                'subtypes' => $selectfrom_subtypes,
+                'group_by' => 'e.guid',
+                'limit' => $list_count,
+                'offset' => $offset,
+                'count' => $count,
+                'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
+            );
+        
+    }
 
-	$this_items_tags = $thisitem->tags;
-  	if ($this_items_tags) //if the current item has tags
-  	{
-  		if (is_array($this_items_tags)) //if the current item has more than 1 tag
-		{	
-			$this_items_tags = array_unique($this_items_tags); // create unique list
-		}
-		else {
-			$this_items_tags = array($this_items_tags);
-		}
-		$options = array(
-	    	'type' => 'object', 
-	    	'subtypes' => $selectfrom_subtypes,
-	    	'order_by' => 'match_count DESC',
-			'group_by' => 'e.guid',
-	    	'limit' => $list_count,
-	    	'offset' => $offset,
-	    	'count' => $count,
-	    	'metadata_names' => 'tags',
-	    	'metadata_case_sensitive' => FALSE,
-	    	'metadata_values' => $this_items_tags,
-	    	'selects' => array('count(msv.string) as match_count'),
-			'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
-		);
-
-		if ($limit_by_date == 'yes')
-			$options['created_time_lower'] = $created_time_lower;
-		if ($selectfrom_owner <> 'all')
-			$options['owner_guids'] = $thisitem->getOwner();		
-	    $items = elgg_get_entities_from_metadata($options); //get list of  entities
-	    //elgg_dump('count of related items a : ' . count($items));
-	  
-	    if(count($items,0) > 0)
-			 return $items;
-		else 
-		   return false;
-	 }
+    
+    if ($limit_by_date == 'yes')
+        $options['created_time_lower'] = $created_time_lower;
+    if ($selectfrom_owner <> 'all')
+        $options['owner_guids'] = $thisitem->getOwner();        
+    $items = elgg_get_entities_from_metadata($options); //get list of  entities
+    
+    if(count($items,0) > 0)
+         return $items;
+    else 
+       return false;
 }
 
 function related_items_page_handler($page) {
+      $page[0] = (int) $page[0];
 	  $entity = get_entity($page[0]);
 	  if ($entity instanceof ElggObject){
 	  elgg_set_page_owner_guid($entity->getContainerGUID());

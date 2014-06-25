@@ -78,8 +78,12 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
     if ($limit_by_date == 'yes')
         $options['created_time_lower'] = $created_time_lower;
     if ($selectfrom_owner <> 'all')
-        $options['owner_guids'] = $thisitem->getOwner();        
-    $items = elgg_get_entities_from_metadata($options); //get list of  entities
+        $options['owner_guids'] = $thisitem->getOwner();   
+    
+    if ($options)     
+        $items = elgg_get_entities_from_metadata($options); //get list of  entities
+    else 
+        return false;
     
     if(count($items,0) > 0)
          return $items;

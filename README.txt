@@ -18,6 +18,8 @@ todo:
 links to create a related item (with same tags as present item).
 sidebar widget view.
 
+0.9.2: fixed php warning about array
+
 0.7.9
 fixed: pagination missing on 'view all related items' page
 added: count of related items to 'view all related items' link

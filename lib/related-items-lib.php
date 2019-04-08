@@ -55,7 +55,6 @@ if (!function_exists('get_nice_name_for_subtype'))
                         break;
                     }
                     case 'file':
-                    case 'blog':
                     {
                         $type_label = elgg_echo ($subtype . ':' . $subtype);
                         break;

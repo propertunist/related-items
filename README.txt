@@ -14,9 +14,7 @@ the greater the number of matching tags between the presently viewed item and th
 CHANGELOG
 =============================
 
-todo:
-links to create a related item (with same tags as present item).
-sidebar widget view.
+3.0.1: added compatibility for elgg 3.x
 
 2.0: added compatibility for elgg 2.0
 

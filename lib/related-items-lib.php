@@ -113,7 +113,7 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
     	    	'metadata_names' => 'tags',
     	    	'metadata_case_sensitive' => FALSE,
     	    	'metadata_values' => $this_items_tags,
-    	    	'selects' => array('count(msv.string) as match_count'),
+    	    	'selects' => array('count(*) as match_count'),
                 'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
             );
       	}

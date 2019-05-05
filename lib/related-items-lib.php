@@ -141,7 +141,7 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
     }
     if ($options)
     {
-        $items = elgg_get_entities_from_metadata($options); //get list of  entities
+        $items = elgg_get_entities($options); //get list of  entities
     }
     else
     {

@@ -1,4 +1,6 @@
 <?php
+use Elgg\Database\QueryBuilder;
+use Elgg\Database\Clauses\OrderByClause;
 
 /* function: get_related_entities
  * 
@@ -105,16 +107,23 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
             $options = array(
                 'type' => 'object',
                 'subtypes' => $selectfrom_subtypes,
-                'order_by' => 'match_count DESC, e.time_created DESC',
+                'order_by' => [
+                    new OrderByClause('match_count', 'DESC'),
+                    new OrderByClause('e.time_created', 'DESC'),
+            			],
                 'group_by' => 'e.guid',
-    	    	'limit' => $list_count,
-    	    	'offset' => $offset,
-    	    	'count' => $count,
-    	    	'metadata_names' => 'tags',
-    	    	'metadata_case_sensitive' => FALSE,
-    	    	'metadata_values' => $this_items_tags,
-    	    	'selects' => array('count(*) as match_count'),
-                'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
+        	    	'limit' => $list_count,
+        	    	'offset' => $offset,
+        	    	'count' => $count,
+        	    	'metadata_names' => 'tags',
+        	    	'metadata_case_sensitive' => FALSE,
+        	    	'metadata_values' => $this_items_tags,
+        	    	'selects' => array('count(*) as match_count'),
+                'wheres' => [
+                    function(QueryBuilder $qb) use ($thisitem) {
+            					return $qb->compare('e.guid', '<>', $thisitem->getGUID()); // exclude this item from list.
+            				},
+                  ],
             );
       	}
     }
@@ -127,7 +136,11 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset)
             'limit' => $list_count,
             'offset' => $offset,
             'count' => $count,
-            'wheres' => array('e.guid <> ' . $thisitem->getGUID()), // exclude this item from list.
+            'wheres' => [
+                function(QueryBuilder $qb) use ($thisitem) {
+                  return $qb->compare('e.guid', '<>', $thisitem->getGUID()); // exclude this item from list.
+                },
+              ],
         );
     }
 

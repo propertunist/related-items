@@ -3,7 +3,7 @@
 	<name>Related Items</name>
   <id>related-items</id>
 	<author>Rohit Gupta / ura soul</author>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<category>Misc</category>
 	<description>displays related items for present entity - selected by tags.</description>
 	<license>GNU Public License version 2</license>

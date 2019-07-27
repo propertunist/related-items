@@ -3,13 +3,13 @@
 	<name>Related Items</name>
   <id>related-items</id>
 	<author>Rohit Gupta / ura soul</author>
-	<version>3.0.2</version>
+	<version>3.1.1</version>
 	<category>Misc</category>
 	<description>displays related items for present entity - selected by tags.</description>
 	<license>GNU Public License version 2</license>
 	<requires>
 		<type>elgg_release</type>
-		<version>3.0</version>
+		<version>3.1</version>
 	</requires>
 	<admin_interface>simple</admin_interface>
 	<activate_on_install>false</activate_on_install>

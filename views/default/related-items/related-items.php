@@ -79,7 +79,7 @@ if(in_array($vars['entity']->getSubtype(),$renderto_subtypes))
                         {
                             $cover_guid = $related_item->getCoverImageGuid();
                             $album_cover = get_entity($cover_guid);
-                            if (elgg_instanceof($album_cover, 'object', 'image'))
+                            if ($album_cover->getSubtype === 'image')
                             {
                                     $icon_url = $elgg_path . "photos/thumbnail/" . $cover_guid . "/small/";
                                     break;

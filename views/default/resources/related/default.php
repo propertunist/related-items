@@ -51,7 +51,7 @@ if ($entity instanceof ElggObject)
         default: break;
     }
 
-    if (elgg_instanceof($container, 'group'))
+    if ($container instanceof ElggGroup)
     { //container
         elgg_push_breadcrumb($owner->name, $subtype . "/group/$owner->guid/all");
     }

@@ -78,7 +78,7 @@ break;
 		$content = elgg_echo('related-items:none');
 	}
 
-	$layout = elgg_view_layout('content', [
+	$layout = elgg_view_layout('default', [
 		'title' => $title,
 		'content' => $content,
 		'filter' => false,

@@ -5,7 +5,7 @@
 */
 ?>
 .related-items-panel{
-	padding:15px;	
+	padding:15px;
 }
 .related-items-panel > .elgg-input-text {
 	width:auto;

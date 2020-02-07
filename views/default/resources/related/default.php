@@ -87,4 +87,4 @@ break;
 	echo elgg_view_page($title, $layout);
 }
 
-	?>
+	

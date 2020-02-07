@@ -3,14 +3,14 @@ use Elgg\Database\QueryBuilder;
 use Elgg\Database\Clauses\OrderByClause;
 
 /* function: get_related_entities
- * 
+ *
  * inputs:  $thisitem (object entity) = the entity for which related entities will be retrieved
  *          $list_count (int) = size of list to be retrieved
  *          $count (bool) = return a count of the list or not
  *          $offset (int) = the offset position from which the returned list will begin
- * 
+ *
  * returns: array of entities that are related to the inputted entity by similarity of keyword tags
- * 
+ *
  * author: ura soul
  */
 

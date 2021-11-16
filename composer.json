@@ -1,0 +1,18 @@
+{
+	"name": "related-items",
+	"description": "Displays related items for present entity - selected by tags.",
+	"homepage": "http://www.campuskarma.in/",
+	"type": "elgg-plugin",
+	"keywords": ["elgg", "plugin"],
+	"license": "Private Use",
+	"support": {
+		"source": "https://github.com/rohit1290/related-items",
+		"issues": "https://github.com/rohit1290/related-items/issues"
+	},
+	"require": {
+		"composer/installers": "^1.0.8"
+	},
+	"conflict": {
+		"elgg/elgg": "<4.0"
+	}
+}

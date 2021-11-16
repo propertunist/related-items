@@ -19,13 +19,9 @@ class RelatedItems extends DefaultPluginBootstrap {
   		}
   	}
 
-  		// elgg_register_page_handler('related', 'related_items_page_handler');
-
-  	if ((!elgg_in_context('katalists'))&&(!elgg_in_context('pinboards'))) {
-  		elgg_extend_view('page/elements/comments', 'related-items/related-items', $comment_position);
-  		elgg_extend_view('discussion/replies', 'related-items/related-items', 0);
-  	}
-  		elgg_extend_view('admin.css', 'related-items/admin', 1);
-  		elgg_extend_view('elgg.css', 'related-items/css');
+ 		elgg_extend_view('page/elements/comments', 'related-items/related-items', $comment_position);
+ 		elgg_extend_view('discussion/replies', 'related-items/related-items', 0);
+ 		elgg_extend_view('admin.css', 'related-items/admin', 1);
+ 		elgg_extend_view('elgg.css', 'related-items/css');
   }
 }

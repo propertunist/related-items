@@ -1,14 +1,12 @@
 <?php
-
 /*
  * elgg - related-items: view related items
  */
 
 // discussion topic entities are not present in vars in elgg 1.9+ - the entity is called 'topic' instead
-if ($vars['topic']) {
-	$vars['entity'] = $vars['topic'];
-}
-
+// if ($vars['topic']) {
+// 	$vars['entity'] = $vars['topic'];
+// }
 $renderto_subtypes = array_filter(explode(',', elgg_get_plugin_setting('renderto_subtypes', 'related-items')));
 if (in_array($vars['entity']->getSubtype(), $renderto_subtypes)) {
 	$max_related_items = elgg_get_plugin_setting('max_items', 'related-items');

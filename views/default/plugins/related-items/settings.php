@@ -52,47 +52,31 @@
 	echo elgg_echo('related-items:selectfrom-subtypes');
 	echo "<br/><br/>";
 
-	$content = '<div class="dv_selectfrom_subtypes">';
 	$valid_types = get_valid_types(['thewire', 'comment']);
 
-	$active_from_subtypes = array_filter(explode(',', $vars["entity"]->selectfrom_subtypes));
-	$checked_subtypes = [];
-	foreach ($valid_types as $valid_type) {
-		if (in_array($valid_type, $active_from_subtypes)) {
-			$checked_subtypes[] = $valid_type;
-		}
-	}
+	$content = '<div class="dv_selectfrom_subtypes">';
 	$content .= elgg_view('input/checkboxes', [
-									'name'=>'from_subtypes',
-									'value'=>$checked_subtypes,
-									'options'=>$valid_types,
-									'default' => false]);
-	$content .= '</div>';
-	$content .= elgg_view('input/hidden', [
 									'id'=>'in_selectfrom_subtypes',
 									'class'=>'in_selectfrom_subtypes',
 									'name'=>'params[selectfrom_subtypes]',
-									'value'=>$vars["entity"]->selectfrom_subtypes]
-							);
+									'options_values' => $valid_types,
+									'value'=> explode(",", $vars["entity"]->selectfrom_subtypes)
+							]);
+	$content .= '</div>';
 	echo $content;
 	echo "<br/>";
 	echo elgg_echo('related-items:renderto-subtypes');
 	echo "<br/><br/>";
 
 	$content = '<div class="dv_renderto_subtypes">';
-
 	$content .= elgg_view('input/checkboxes', [
-										'name'=>'to_subtypes',
-										'value'=> array_filter(explode(',', $vars["entity"]->renderto_subtypes)),
-										'options'=>$valid_types,
-										'default' => false]);
-	$content .= '</div>';
-	$content .= elgg_view('input/hidden', [
 											'id'=>'in_renderto_subtypes',
 											'class'=>'in_renderto_subtypes',
 											'name'=>'params[renderto_subtypes]',
-											'value'=> $vars["entity"]->renderto_subtypes]
-					);
+											'options_values' => $valid_types,
+											'value'=> explode(",", $vars["entity"]->renderto_subtypes)
+					]);
+	$content .= '</div>';
 	echo $content;
 	echo "<br/><h3>";
 	echo elgg_echo ('related-items:display-options');

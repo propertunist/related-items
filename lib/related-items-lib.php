@@ -23,13 +23,13 @@ if (!function_exists('get_valid_types')) {
 			if ($subtype == 'page') {
 				if (!in_array('page_top', $invalid_types)) {
 					 $nice_name = get_nice_name_for_subtype('page_top');
-					 $subtypes[$nice_name] = 'page_top';
+					 $subtypes['page_top'] = $nice_name;
 				}
 			}
 
 			if (!in_array($subtype, $invalid_types)) {
 				$nice_name = get_nice_name_for_subtype($subtype);
-				$subtypes[$nice_name] = $subtype;
+				$subtypes[$subtype] = $nice_name;
 			}
 		}
 		return $subtypes;

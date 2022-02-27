@@ -139,8 +139,8 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset) {
 		return false;
 	}
 
-	if (count($items, 0) > 0) {
-		 return $items;
+	if (is_array($items)) {
+		 return count($items) > 0 ? $items : false;
 	} else {
 		return false;
 	}

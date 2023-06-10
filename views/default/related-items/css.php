@@ -8,8 +8,8 @@
 	padding-top:1em;
 	text-align:center;
 	display:flex;
-        flex-wrap:wrap;
-        width:100%;
+		flex-wrap:wrap;
+		width:100%;
 }
 
 .elgg-related-item:hover > a{
@@ -28,8 +28,8 @@
 }
 
 .elgg-related-item {
-        flex-grow:1;
-        flex-shrink:1;
+		flex-grow:1;
+		flex-shrink:1;
 	cursor: hand;
 	cursor: pointer;
 	position:relative;
@@ -39,24 +39,23 @@
 	-webkit-border-radius:4px;
 	-moz-border-radius:4px;
 	-khtml-border-radius:4px;
-        text-align:left;
-        padding-left:6px;
-        padding-top:2px;
+		text-align:left;
+		padding-left:6px;
+		padding-top:2px;
 <?php
-	$show_types = elgg_get_plugin_setting('show_types','related-items');
-	if($show_types == 'yes')
-	{
+	$show_types = elgg_get_plugin_setting('show_types', 'related-items');
+if ($show_types == 'yes') {
 ?>
-	padding-bottom:1.4em;
+padding-bottom:1.4em;
 <?php
-	}
+}
 ?>
 }
 
 .elgg-related-item-title
 {
-        float:left;
-        width:79%;
+		float:left;
+		width:79%;
 }
 
 .elgg-related-item > a{
@@ -97,27 +96,26 @@
 }
 
 .elgg-related-item-icon-holder{
-        max-width: 15%;
-        height:auto;
-        max-height:100%;
-        margin:1px 3px 0px 5px;
+		max-width: 15%;
+		height:auto;
+		max-height:100%;
+		margin:1px 3px 0px 5px;
 }
 
 .elgg-related-item-icon
  {
-        width:100%;
-        height:auto;
+		width:100%;
+		height:auto;
  }
 
- <?php
-	$media_query = elgg_get_plugin_setting('media_query','related-items');
-	if($media_query == 'yes')
-	{
+	<?php
+	$media_query = elgg_get_plugin_setting('media_query', 'related-items');
+	if ($media_query == 'yes') {
 ?>
-            @media only screen and(max-width: 575px) {
-                .elgg-related-item{
-                    width: 100%!important;
-                }
-            }
+			@media only screen and(max-width: 575px) {
+				.elgg-related-item{
+					width: 100%!important;
+				}
+			}
 
-        <?php }
+	<?php }

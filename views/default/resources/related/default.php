@@ -38,7 +38,7 @@ if ($entity instanceof ElggObject) {
 		}
 		case 'blog':
 		{
-			elgg_push_breadcrumb(elgg_echo('blog:blogs'), 'blog/all');
+			elgg_push_breadcrumb(elgg_echo('blog'), 'blog/all');
 			break;
 		}
 		case 'au_set':
@@ -67,7 +67,8 @@ break;
 
 	if ($entity_list) {
 		$title = elgg_echo('related-items:title');
-		$content = elgg_view_entity_list($entity_list, ['count' => get_related_entities($entity, 0, true, 0),
+		$content = elgg_view_entity_list($entity_list, [
+			'count' => get_related_entities($entity, 0, true, 0),
 			'offset' => $offset,
 			'limit' => $limit,
 			'full_view' => false,

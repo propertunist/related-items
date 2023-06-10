@@ -23,7 +23,10 @@
 								'yes' => elgg_echo('option:yes'),
 						],
 				]);
-	echo elgg_view('input/text', ['name'=>'params[related_date_period]', 'value'=>$vars['entity']->related_date_period]);
+	echo elgg_view('input/text', [
+						'name' => 'params[related_date_period]',
+						'value' => $vars['entity']->related_date_period
+			  ]);
 	echo "<br /><br/>";
 	echo elgg_echo('related-items:selectfrom-owner') . ' ';
 	echo elgg_view('input/dropdown', [
@@ -52,7 +55,7 @@
 	echo elgg_echo('related-items:selectfrom-subtypes');
 	echo "<br/><br/>";
 
-	$valid_types = get_valid_types(['thewire', 'comment']);
+	$valid_types = get_valid_types(['thewire', 'comment', 'plugin', 'elgg_upgrade', 'widget', 'user', 'group', 'site']);
 
 	$content = '<div class="dv_selectfrom_subtypes">';
 	$content .= elgg_view('input/checkboxes', [

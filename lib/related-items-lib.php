@@ -17,9 +17,9 @@ use Elgg\Database\Clauses\OrderByClause;
 if (!function_exists('get_valid_types')) {
 	function get_valid_types($invalid_types) {
  // return object entity types in the system
-		$registered_entities = elgg_get_config('registered_entities');
+		$registered_entities = get_entity_statistics();
 		$subtypes = [];
-		foreach ($registered_entities['object'] as $subtype) {
+		foreach ($registered_entities['object'] as $subtype => $counter) {
 			if ($subtype == 'page') {
 				if (!in_array('page_top', $invalid_types)) {
 					 $nice_name = get_nice_name_for_subtype('page_top');
@@ -65,7 +65,7 @@ if (!function_exists('get_nice_name_for_subtype')) {
 	}
 }
 
-function get_related_entities($thisitem, $list_count, $count = false, $offset) {
+function get_related_entities($thisitem, $list_count, $count = false, $offset = 0) {
 	$select_related = elgg_get_plugin_setting('select_related', 'related-items');
 	$limit_by_date = elgg_get_plugin_setting('limit_by_date', 'related-items');
 	$related_date_period = elgg_get_plugin_setting('related_date_period', 'related-items');
@@ -79,9 +79,6 @@ function get_related_entities($thisitem, $list_count, $count = false, $offset) {
 		$selectfrom_subtypes = $thisitem->getSubtype();
 	}
 	if ($select_related === 'related') {
-		$match_tags = elgg_get_plugin_setting('match_tags', 'related-items');
-		$match_tags_int = elgg_get_plugin_setting('match_tags_int', 'related-items');
-
 		$this_items_tags = $thisitem->tags;
 		if ($this_items_tags) { //if the current item has tags
 			if (is_array($this_items_tags)) { //if the current item has more than 1 tag

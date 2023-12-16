@@ -51,7 +51,7 @@ if ($entity instanceof ElggObject) {
 	}
 
 	if ($group instanceof ElggGroup) { //container
-		elgg_push_breadcrumb($group->name, $subtype . "/group/$group->guid/all");
+		elgg_push_breadcrumb($group->name, $subtype . "/group/$group->guid");
 	} else {
 		$owner = $entity->getOwnerEntity();
 		elgg_push_breadcrumb($owner->name,  $subtype . "/owner/$owner->username");

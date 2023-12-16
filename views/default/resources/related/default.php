@@ -2,16 +2,16 @@
 $page = elgg_extract('guid', $vars);
 $entity = get_entity($page);
 if ($entity instanceof ElggObject) {
-	elgg_set_page_owner_guid($entity->getContainerGUID());
 	$subtype = $entity->getSubtype();
 	$container = $entity->getContainerEntity();
-	$owner = elgg_get_page_owner_entity();
+	$group = $entity->getContainerEntity();
 	switch ($subtype) {
 		case 'image':
 		{
 			elgg_push_breadcrumb(elgg_echo('photos'), 'photos/siteimagesall');
 			elgg_push_breadcrumb(elgg_echo('tidypics:albums'), 'photos/all');
 			$subtype = 'photos';
+			$group = get_entity($container->container_guid);
 			break;
 		}
 		case 'page_top':
@@ -47,12 +47,13 @@ if ($entity instanceof ElggObject) {
 			break;
 		}
 		default:
-break;
+		break;
 	}
 
-	if ($container instanceof ElggGroup) { //container
-		elgg_push_breadcrumb($owner->name, $subtype . "/group/$owner->guid/all");
+	if ($group instanceof ElggGroup) { //container
+		elgg_push_breadcrumb($group->name, $subtype . "/group/$group->guid/all");
 	} else {
+		$owner = $entity->getOwnerEntity();
 		elgg_push_breadcrumb($owner->name,  $subtype . "/owner/$owner->username");
 	}
 	if ($subtype === 'photos') { // album
